@@ -93,15 +93,20 @@ export default {
       selectedCategory: null // 預設不篩選
     };
   },
-  // 在組件創建後，自動加上 publicPath 前綴
   created() {
     const publicPath = process.env.NODE_ENV === 'production' ? '/Menu-project/' : '/';
-    this.products.forEach(p => {
+    // 建立一個新的陣列，並在其中修改路徑
+    const updatedProducts = this.products.map(p => {
+      // 複製物件以避免直接修改原始數據
+      const newProduct = { ...p };
       // 確保只在需要時加上前綴
-      if (!p.image_url.startsWith(publicPath)) {
-        p.image_url = publicPath + p.image_url.substring(1);
+      if (!newProduct.image_url.startsWith(publicPath)) {
+        newProduct.image_url = publicPath + newProduct.image_url.substring(1);
       }
+      return newProduct;
     });
+    // 將整個陣列替換為新的響應式數據
+    this.products = updatedProducts;
   },
   computed: {
     // 從商品資料中自動產生分類
