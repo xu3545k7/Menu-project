@@ -5,7 +5,7 @@
     </div>
     <div class="product-info">
       <h3 class="product-name">{{ product.name }}</h3>
-      <p class="product-price">${{ product.price }}</p>
+      <p class="product-size">尺寸 :{{ product.size }}</p>
       <p class="product-category">{{ product.category }}</p>
     </div>
   </div>
@@ -19,10 +19,30 @@ export default {
       type: Object,
       required: true
     }
+  },
+  computed: {
+    processedImageUrl() {
+      // 確保圖片路徑存在
+      if (!this.product || !this.product.image_url) {
+        return '';
+      }
+      // 修正路徑以移除開頭的 "./"，因為 require() 會自動加上它
+      const imagePath = this.product.image_url.startsWith('./')
+        ? this.product.image_url.substring(2) // 移除 "./"
+        : this.product.image_url;
+
+      try {
+        // 使用 require 讓 Webpack 自動處理路徑
+        return require('../' + imagePath);
+      } catch (e) {
+        // 如果圖片找不到，返回空字串或預設圖片
+        console.error(`無法載入圖片: ${imagePath}`, e);
+        return '';
+      }
+    }
   }
 };
 </script>
-
 <style scoped>
 /* styles are correct, no changes needed */
 .product-card {
