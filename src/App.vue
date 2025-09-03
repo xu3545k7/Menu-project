@@ -93,21 +93,7 @@ export default {
       selectedCategory: null // 預設不篩選
     };
   },
-  created() {
-    const publicPath = process.env.NODE_ENV === 'production' ? '/Menu-project/' : '/';
-    // 建立一個新的陣列，並在其中修改路徑
-    const updatedProducts = this.products.map(p => {
-      // 複製物件以避免直接修改原始數據
-      const newProduct = { ...p };
-      // 確保只在需要時加上前綴
-      if (!newProduct.image_url.startsWith(publicPath)) {
-        newProduct.image_url = publicPath + newProduct.image_url.substring(1);
-      }
-      return newProduct;
-    });
-    // 將整個陣列替換為新的響應式數據
-    this.products = updatedProducts;
-  },
+  
   computed: {
     // 從商品資料中自動產生分類
     categories() {

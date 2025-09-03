@@ -5,7 +5,7 @@
     </div>
     <div class="product-info">
       <h3 class="product-name">{{ product.name }}</h3>
-      <p class="product-size">尺寸：{{ product.size }}</p>
+      <p class="product-price">${{ product.price }}</p>
       <p class="product-category">{{ product.category }}</p>
     </div>
   </div>
@@ -24,6 +24,7 @@ export default {
 </script>
 
 <style scoped>
+/* styles are correct, no changes needed */
 .product-card {
   width: 250px;
   border-radius: 8px;
