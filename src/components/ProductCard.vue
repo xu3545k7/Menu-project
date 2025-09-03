@@ -45,6 +45,14 @@ export default {
   cursor: pointer;
 }
 
+  /* 這是針對螢幕寬度小於或等於 600px 的設備 (例如平板和手機) */
+  @media (max-width: 600px) {
+  .product-card {
+    width: 100%; /* 卡片佔滿容器的整個寬度 */
+    margin: 10px 0; /* 在垂直方向增加間距 */
+  }
+}
+
 .product-card:hover {
   transform: translateY(-5px);
 }
