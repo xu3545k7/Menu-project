@@ -32,6 +32,7 @@ export default {
   }
 };
 </script>
+
 <style scoped>
 /* styles are correct, no changes needed */
 .product-card {
