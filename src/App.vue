@@ -2,6 +2,10 @@
   <div id="app">
     <header class="header">
       <h1 class="logo">順旺行產品目錄</h1>
+      <div class="contact-info">
+        <div class="contact-item">📱 Line ID: 0935567325</div>
+        <div class="contact-item">☎️ 電話: (03) 382-2204</div>
+      </div>
     </header>
 
     <div class="main-content">
@@ -40,15 +44,15 @@
             :disabled="currentPage === 1"
             @click="currentPage--"
           >
-            上一頁
+            ⬅ 上一頁
           </button>
-          <span>第 {{ currentPage }} 頁 / 共 {{ totalPages }} 頁</span>
+          <span class="page-info">第 {{ currentPage }} 頁 / 共 {{ totalPages }} 頁</span>
           <button
             class="page-button"
             :disabled="currentPage === totalPages"
-            @click="currentPage++"
+            @click="goToPage(currentPage + 1)"
           >
-            下一頁
+            下一頁 ➡
           </button>
         </div>
       </section>
@@ -58,6 +62,7 @@
 
 <script>
 import ProductCard from './components/ProductCard.vue';
+import { products } from './data/products';
 
 export default {
   name: 'App',
@@ -67,48 +72,9 @@ export default {
   data() {
     return {
       // 硬寫入的商品資料
-      products: [
-        { id: 1, name: '高山黑皮香菇', category: '香菇', size: '3~4cm', image_url: require('./assets/高山黑皮香菇 3~4cm.jpg')},
-        { id: 2, name: '高山黑皮香菇', category: '香菇', size: '4~5cm', image_url: require('./assets/高山黑皮香菇 4~5cm.jpg')},
-        { id: 3, name: '高山黑皮香菇', category: '香菇', size: '5~6cm', image_url: require('./assets/高山黑皮香菇 5~6cm.jpg')},
-        { id: 4, name: '頂級段木香菇', category: '香菇', size: '5~6cm', image_url: require('./assets/頂級段木香菇 5~6cm.jpg')},
-        { id: 5, name: '頂級高山花菇', category: '香菇', size: '2~3cm', image_url: require('./assets/頂級高山花菇 2~3cm.jpg')},
-        { id: 6, name: '頂級高山花菇', category: '香菇', size: '4~5cm', image_url: require('./assets/頂級高山花菇 4~5cm.jpg')},
-        { id: 7, name: '頂級高山花菇', category: '香菇', size: '5~6cm', image_url: require('./assets/頂級高山花菇 5~6cm.jpg')},
-        { id: 8, name: '巴西蘑菇', category: '乾貨', size: '無固定', image_url: require('./assets/巴西蘑菇.jpg')},
-        { id: 9, name: '白木耳', category: '乾貨', size: '無固定', image_url: require('./assets/白木耳.jpg')},
-        { id: 10, name: '芒果乾', category: '果乾', size: '無固定', image_url: require('./assets/芒果乾.jpg')},
-        { id: 11, name: '拉拉山水蜜桃乾', category: '果乾', size: '無固定', image_url: require('./assets/拉拉山水蜜桃乾.jpg')},
-        { id: 12, name: '紅心芭樂乾', category: '果乾', size: '無固定', image_url: require('./assets/紅心芭樂乾.jpg')},
-        { id: 13, name: '紅棗', category: '果乾', size: '無固定', image_url: require('./assets/紅棗.jpg')},
-        { id: 14, name: '鹿茸菇', category: '乾貨', size: '無固定', image_url: require('./assets/鹿茸菇.jpg')},
-        { id: 15, name: '鈕扣小香菇 2~3cm', category: '香菇', size: '2~3cm', image_url: require('./assets/鈕扣小香菇 2~3cm.jpg')},
-        { id: 16, name: '順旺梅片', category: '果乾', size: '無固定', image_url: require('./assets/順旺梅片.jpg')},
-        { id: 17, name: '段木柴木耳', category: '乾貨', size: '無固定', image_url: require('./assets/黑木耳.jpg')},
-        { id: 18, name: '橘子乾', category: '果乾', size: '無固定', image_url: require('./assets/橘子乾.jpg')},
-        { id: 19, name: '順旺梅片芒果', category: '果乾', size: '無固定', image_url: require('./assets/順旺梅片芒果.jpg')},
-        { id: 20, name: '山苦瓜乾', category: '乾貨', size: '無固定', image_url: require('./assets/山苦瓜乾.jpg')},
-        { id: 21, name: '日曬瓜菜脯', category: '乾貨', size: '無固定', image_url: require('./assets/日曬瓜菜脯.jpg')},
-        { id: 22, name: '日曬香粒菜脯', category: '乾貨', size: '無固定', image_url: require('./assets/日曬香粒菜脯.jpg')},
-        { id: 23, name: '日曬細條菜脯', category: '乾貨', size: '無固定', image_url: require('./assets/日曬細條菜脯.jpg')},
-        { id: 24, name: '日曬條菜脯', category: '乾貨', size: '無固定', image_url: require('./assets/日曬條菜脯.jpg')},
-        { id: 25, name: '水蜜桃小時候', category: '果乾', size: '無固定', image_url: require('./assets/水蜜桃小時候.jpg')},
-        { id: 25, name: '水蜜桃乾', category: '果乾', size: '無固定', image_url: require('./assets/水蜜桃乾.jpg')},
-        { id: 26, name: '台灣紅豆', category: '乾貨', size: '無固定', image_url: require('./assets/台灣紅豆.jpg')},
-        { id: 27, name: '有機三色黎麥', category: '乾貨', size: '無固定', image_url: require('./assets/有機三色黎麥.jpg')},
-        { id: 28, name: '有機黑豆', category: '乾貨', size: '無固定', image_url: require('./assets/有機黑豆.jpg')},
-        { id: 29, name: '有機紅藜麥', category: '乾貨', size: '無固定', image_url: require('./assets/有機紅藜麥.jpg')},
-        { id: 30, name: '有機黑黎麥', category: '乾貨', size: '無固定', image_url: require('./assets/有機黑黎麥.jpg')},
-        { id: 31, name: '芭樂乾', category: '果乾', size: '無固定', image_url: require('./assets/芭樂乾.jpg')},
-        { id: 32, name: '阿婆日曬梅干菜', category: '乾貨', size: '無固定', image_url: require('./assets/阿婆日曬梅干菜.jpg')},
-        { id: 33, name: '粉綠豆', category: '乾貨', size: '無固定', image_url: require('./assets/粉綠豆.jpg')},
-        { id: 34, name: '雪蓮子', category: '乾貨', size: '無固定', image_url: require('./assets/雪蓮子.jpg')},
-        { id: 35, name: '無籽中藥橄欖', category: '乾貨', size: '無固定', image_url: require('./assets/無籽中藥橄欖.jpg')},
-        { id: 36, name: '傳統台灣橄欖', category: '乾貨', size: '無固定', image_url: require('./assets/傳統台灣橄欖.jpg')},
-        { id: 36, name: '糯薏仁', category: '乾貨', size: '無固定', image_url: require('./assets/糯薏仁.jpg')},
-    ],
+      products,
       currentPage: 1,
-      itemsPerPage: 9,
+      itemsPerPage: window.innerWidth <= 768 ? 5 : 9,
       selectedCategory: null // 預設不篩選
     };
   },
@@ -146,130 +112,227 @@ export default {
         behavior: 'smooth' // 讓捲動有平滑效果
       });
     }
+  },
+  methods: {
+    // 新增一個方法來處理分頁和捲動
+    goToPage(page) {
+      this.currentPage = page;
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
   }
 };
 </script>
 
 <style>
-/* 全域樣式 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&display=swap');
+
 body {
   margin: 0;
-  background-color: #f7f7f7;
+  font-family: 'Noto Sans TC', sans-serif;
+  background-color: #fafafa;
+  color: #333;
 }
 
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  color: #2c3e50;
-}
-
-.header {
-  background-color: #fff;
-  padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-.logo {
-  margin: 0;
-  font-size: 2rem;
-  color: #e60023;
-}
-
-.main-content {
-  display: flex;
-  padding: 20px;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
-.sidebar {
+/* Header */
+.header {
   position: sticky;
-  top: 20px;
-  align-self: flex-start; /* 讓側邊欄只佔據它本身的高度，不被拉伸 */
+  top: 0;
+  z-index: 100;
+  background: linear-gradient(90deg, #e60023f3, #ff33449c);
+  padding: 15px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+}
 
-  width: 250px;
+.logo {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  font-size: 0.95rem;
+}
+
+.contact-item {
+  margin: 2px 0;
+}
+
+/* Layout */
+.main-content {
+  display: flex;
   padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  margin-right: 20px;
+  gap: 20px;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  height: fit-content;
+}
+
+.sidebar h2 {
+  margin-top: 0;
+  font-size: 1.2rem;
+  color: #e60023;
 }
 
 .category-list {
-  list-style-type: none;
+  list-style: none;
   padding: 0;
-  margin-top: 15px;
+  margin: 15px 0 0 0;
 }
 
 .category-list li {
-  padding: 12px 15px;
-  font-size: 1.1rem;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  border-radius: 8px;
   cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s;
+  transition: all 0.25s;
+  background: #f8f8f8;
 }
 
-.category-list li:hover,
+.category-list li:hover {
+  background: #e60023;
+  color: #fff;
+  transform: translateX(4px);
+}
+
 .category-list li.active {
-  background-color: #eee;
+  background: #e60023;
+  color: #fff;
   font-weight: bold;
 }
-
-/* ... 其他樣式保持不變 ... */
-
-.product-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  /* 使用 gap 來代替 margin，更現代 */
-  gap: 8px; 
-}
-
-/* 這是針對大於 768px 的設備（電腦版） */
-@media (min-width: 769px) {
-  .product-list {
-    /* 確保在電腦上是正常的 flex 行為 */
-    flex-direction: row; 
-  }
-}
-
-/* 這是針對小於或等於 768px 的設備（手機版） */
 @media (max-width: 768px) {
-  .product-list {
-    /* 在手機上切換為垂直排列 */
+  .main-content {
     flex-direction: column;
-    align-items: center;
+  }
+
+  .sidebar {
+    position: sticky;
+    top: 120px; /* 跟 header 保持一點距離 */
+    width: 100%;
+    margin: 0 0 20px 0;
+    padding: 10px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    overflow-x: auto;
+  }
+
+  .category-list {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 10px;
+    overflow-x: auto;
+    margin: 0;
+    padding: 0;
+  }
+
+  .category-list li {
+    flex: 0 0 auto; /* 防止被壓縮 */
+    white-space: nowrap;
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    background-color: #fafafa;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+  }
+
+  .category-list li.active {
+    background-color: #e60023;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+  }
+
+  .category-list li:hover {
+    background-color: #e60023;
+    color: #fff;
   }
 }
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(3, 1fr); /* 電腦：3 欄 */
   gap: 20px;
-  width: 100%;
+  padding: 20px;
 }
 
+/* 手機排版 */
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: 1fr; /* 手機：直排 */
+    gap: 15px;
+  }
+}
+
+/* Pagination */
 .pagination {
-  text-align: center;
-  margin-top: 30px;
+  margin-top: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 15px;
+  gap: 12px;
 }
 
 .page-button {
-  padding: 10px 20px;
+  padding: 10px 22px;
+  border: none;
+  border-radius: 25px;
+  background: #e60023;
+  color: white;
   font-size: 1rem;
   cursor: pointer;
-  background-color: #e60023;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  transition: background-color 0.3s;
+  transition: 0.3s;
+}
+
+.page-button:hover:not(:disabled) {
+  background: #cc001f;
 }
 
 .page-button:disabled {
-  background-color: #ccc;
+  background: #ccc;
   cursor: not-allowed;
+}
+
+.page-info {
+  font-weight: 600;
+  color: #333;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .main-content {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+  }
+  .contact-info {
+    text-align: center;
+    align-items: center;
+  }
+  .header {
+    flex-direction: column;
+    text-align: center;
+  }
 }
 </style>

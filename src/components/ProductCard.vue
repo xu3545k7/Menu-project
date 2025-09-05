@@ -5,7 +5,7 @@
     </div>
     <div class="product-info">
       <h3 class="product-name">{{ product.name }}</h3>
-      <p class="product-size">尺寸 :{{ product.size }}</p>
+      <p class="product-size">尺寸：{{ product.size }}</p>
       <p class="product-category">{{ product.category }}</p>
     </div>
   </div>
@@ -19,83 +19,85 @@ export default {
       type: Object,
       required: true
     }
-  },
-  computed: {
-    processedImageUrl() {
-      // 確保圖片路徑存在
-      if (!this.product || !this.product.image_url) {
-        return '';
-      }
-      // 這裡使用 `require` 並將圖片路徑拼接
-      return require(`@/${this.product.image_url}`);
-    }
   }
 };
 </script>
 
 <style scoped>
-/* styles are correct, no changes needed */
 .product-card {
-  width: 250px;
-  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-  font-family: Arial, sans-serif;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
   cursor: pointer;
-}
-
-  /* 這是針對螢幕寬度小於或等於 600px 的設備 (例如平板和手機) */
-  @media (max-width: 600px) {
-  .product-card {
-    width: 100%; /* 卡片佔滿容器的整個寬度 */
-    margin: 10px 0; /* 在垂直方向增加間距 */
-  }
+  font-family: "Segoe UI", Arial, sans-serif;
 }
 
 .product-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
 .product-image-container {
   width: 100%;
-  height: 200px;
+  height: 220px;
+  background: linear-gradient(135deg, #f9f9f9, #ececec);
   overflow: hidden;
-  background-color: #f0f0f0;
 }
 
 .product-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease;
+  transition: transform 0.35s ease;
 }
 
 .product-card:hover .product-image {
-  transform: scale(1.05);
+  transform: scale(1.08);
 }
 
 .product-info {
-  padding: 16px;
+  padding: 14px 16px 18px;
   text-align: center;
 }
 
 .product-name {
-  font-size: 1.2rem;
-  font-weight: bold;
+  font-size: 1.25rem;
+  font-weight: 600;
   margin-bottom: 8px;
-  color: #333;
+  color: #222;
+  line-height: 1.4;
 }
 
 .product-size {
   font-size: 1rem;
-  color: #e60023;
-  font-weight: bold;
-  margin-bottom: 4px;
+  color: #e63946;
+  font-weight: 500;
+  margin-bottom: 6px;
 }
 
 .product-category {
-  font-size: 0.9rem;
-  color: #666;
+  font-size: 0.95rem;
+  color: #777;
+  letter-spacing: 0.3px;
+}
+
+/* 手機版調整 */
+@media (max-width: 600px) {
+  .product-card {
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  .product-image-container {
+    height: 280px;
+  }
+
+  .product-name {
+    font-size: 1.1rem;
+  }
 }
 </style>
