@@ -1,16 +1,41 @@
 <template>
   <div id="app">
     <header class="header">
-      <h1 class="logo">順旺行產品目錄</h1>
+      <img
+        src="@/assets/logo.png"
+        alt="順旺行產品目錄"
+        class="logo"
+      >
       <div class="contact-info">
-        <div class="contact-item">📱 Line ID: 0935567325</div>
-        <div class="contact-item">☎️ 電話: (03) 382-2204</div>
+        <div class="contact-item">
+      <img
+        src="@/assets/line_icon.jpg"
+        alt="Line ID"
+        class="contact-icon"
+      >
+      <span>Line ID: 0935567325</span>
+    </div>
+    <div class="contact-item">
+      <img
+        src="@/assets/phone.jpg"
+        alt="電話"
+        class="contact-icon"
+      >
+      <span>電話: (03) 382-2204</span>
+    </div>
       </div>
     </header>
 
     <div class="main-content">
       <aside class="sidebar">
-        <h2>分類</h2>
+        <div class="search-bar">
+          <input
+            type="text"
+            v-model="searchQuery"
+            placeholder="搜尋商品名稱..."
+            class="search-input"
+          />
+        </div>
         <ul class="category-list">
           <li
             :class="{ active: selectedCategory === null }"
@@ -73,6 +98,7 @@ export default {
     return {
       // 硬寫入的商品資料
       products,
+      searchQuery: '',
       currentPage: 1,
       itemsPerPage: window.innerWidth <= 768 ? 5 : 9,
       selectedCategory: null // 預設不篩選
@@ -87,10 +113,17 @@ export default {
     },
     // 過濾後的商品列表
     filteredProducts() {
-      if (!this.selectedCategory) {
-        return this.products;
+      let filtered = this.products;
+      if (this.selectedCategory) {
+        filtered = filtered.filter(p => p.category === this.selectedCategory);
       }
-      return this.products.filter(p => p.category === this.selectedCategory);
+      if (this.searchQuery) {
+        const query = this.searchQuery.toLowerCase();
+        filtered = filtered.filter(p => 
+          p.name.toLowerCase().includes(query)
+        );
+      }
+      return filtered;
     },
     // 根據頁碼計算要顯示的商品
     paginatedProducts() {
@@ -111,6 +144,10 @@ export default {
         top: 0,
         behavior: 'smooth' // 讓捲動有平滑效果
       });
+    },
+    searchQuery() {
+      this.currentPage = 1; // 搜尋時回到第一頁
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   },
   methods: {
@@ -154,16 +191,24 @@ body {
   color: #fff;
 }
 
+
+.contact-icon {
+  /* 關鍵修改：使用 em 單位 */
+  height: 1em; /* 圖片高度等於字體大小 */
+  width: auto; /* 寬度自動等比縮放 */
+}
+
 .logo {
+  height: 1.2em;
   font-size: 1.8rem;
-  font-weight: 700;
+  font-weight: 500;
   margin: 0;
 }
 
 .contact-info {
   display: flex;
   flex-direction: column;
-  text-align: right;
+  text-align: left;
   font-size: 0.95rem;
 }
 
@@ -180,6 +225,11 @@ body {
 
 /* Sidebar */
 .sidebar {
+  position: sticky;
+  top: 20px;
+  align-self: flex-start;
+  z-index: 5;
+
   width: 220px;
   background: #fff;
   border-radius: 12px;
@@ -318,6 +368,29 @@ body {
   color: #333;
 }
 
+/* Search Bar */
+.search-bar {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.search-input {
+  width: 100%;
+  max-width: 600px;
+  padding: 12px 20px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  outline: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: border-color 0.3s;
+}
+
+.search-input:focus {
+  border-color: #e60023;
+}
+
 /* Responsive */
 @media (max-width: 900px) {
   .main-content {
@@ -333,6 +406,9 @@ body {
   .header {
     flex-direction: column;
     text-align: center;
+  }
+  .search-input {
+    margin: 0 10px;
   }
 }
 </style>
